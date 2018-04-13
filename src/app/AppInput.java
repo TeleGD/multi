@@ -1,0 +1,243 @@
+package app;
+
+import org.newdawn.slick.Input;
+
+public class AppInput extends Input {
+
+	public static final int BUTTON_A = 1;
+	public static final int BUTTON_B = 2;
+	public static final int BUTTON_X = 4;
+	public static final int BUTTON_Y = 8;
+	public static final int BUTTON_L = 16;
+	public static final int BUTTON_R = 32;
+	public static final int BUTTON_ZL = 64;
+	public static final int BUTTON_ZR = 128;
+	public static final int BUTTON_MINUS = 256;
+	public static final int BUTTON_PLUS = 512;
+	public static final int BUTTON_SL = 1024;
+	public static final int BUTTON_SR = 2048;
+	public static final int BUTTON_UP = 4096;
+	public static final int BUTTON_DOWN = 80192;
+	public static final int BUTTON_LEFT = 16384;
+	public static final int BUTTON_RIGHT = 32768;
+	public static final int AXIS_XL = 0;
+	public static final int AXIS_YL = 1;
+	public static final int AXIS_XR = 2;
+	public static final int AXIS_YR = 3;
+
+	private static final int BUTTON_COUNT = 16;
+	private static final int AXIS_COUNT = 4;
+
+	private boolean pollFlag;
+	private int [] controls;
+	private int [] controllerPressed;
+
+	public AppInput (int height) {
+		super (height);
+		this.pollFlag = false;
+		int controllerCount = this.getControllerCount ();
+		this.controls = new int [controllerCount];
+		this.controllerPressed = new int [controllerCount];
+	}
+
+	@Override
+	public void poll (int width, int height) {
+		this.pollFlag = true;
+		super.poll (width, height);
+		for (int i = 0, l = this.getControllerCount (); i < l; i++) {
+			try {
+				if (((this.controls [i] & 1) == 0) == super.getAxisValue (i, 4) > .5f) {
+					this.controls [i] ^= 1;
+					if ((this.controls [i] & 1) != 0) {
+						this.controllerPressed [i] |= 1;
+					}
+				}
+			} catch (IndexOutOfBoundsException exception) {}
+			try {
+				if (((this.controls [i] & 2) == 0) == super.getAxisValue (i, 4) < -.5f) {
+					this.controls [i] ^= 2;
+					if ((this.controls [i] & 2) != 0) {
+						this.controllerPressed [i] |= 2;
+					}
+				}
+			} catch (IndexOutOfBoundsException exception) {}
+		}
+		this.pollFlag = false;
+	}
+
+	@Override
+	public boolean isControllerUp (int controller) {
+		return super.isControllerUp (controller) && !super.isControllerDown (controller);
+	}
+
+	@Override
+	public boolean isControllerDown (int controller) {
+		return super.isControllerDown (controller) && !super.isControllerUp (controller);
+	}
+
+	@Override
+	public boolean isControllerLeft (int controller) {
+		return super.isControllerLeft (controller) && !super.isControllerRight (controller);
+	}
+
+	@Override
+	public boolean isControllerRight (int controller) {
+		return super.isControllerRight (controller) && !super.isControllerLeft (controller);
+	}
+
+	@Override
+	public boolean isButtonPressed (int buttons, int controller) {
+		if (this.pollFlag) {
+			try {
+				if (super.isButtonPressed (buttons, controller)) {
+					return true;
+				}
+			} catch (ArrayIndexOutOfBoundsException exception) {}
+			return false;
+		}
+		for (int i = 0, j = 0, l = AppInput.BUTTON_COUNT; i < l; i++, j++) {
+			if (i == 6) {
+				try {
+					if ((buttons & 1) != 0 && super.getAxisValue (controller, 4) > .5f) {
+						return true;
+					}
+				} catch (IndexOutOfBoundsException exception) {}
+				j--;
+			} else if (i == 7) {
+				try {
+					if ((buttons & 1) != 0 && super.getAxisValue (controller, 4) < -.5f) {
+						return true;
+					}
+				} catch (IndexOutOfBoundsException exception) {}
+				j--;
+			} else if ((buttons & 1) != 0) {
+				switch (i) {
+					case 12:
+						if (this.isControllerUp (controller)) {
+							return true;
+						}
+						break;
+					case 13:
+						if (this.isControllerDown (controller)) {
+							return true;
+						}
+						break;
+					case 14:
+						if (this.isControllerLeft (controller)) {
+							return true;
+						}
+						break;
+					case 15:
+						if (this.isControllerRight (controller)) {
+							return true;
+						}
+						break;
+					default:
+						try {
+							if (super.isButtonPressed (j, controller)) {
+								return true;
+							}
+						} catch (IndexOutOfBoundsException exception) {}
+				}
+			}
+			buttons >>>= 1;
+		}
+		return false;
+	}
+
+	// public boolean areButtonsPressed (int buttons, int controller) {
+	// 	for (int i = 0; i < AppInput.BUTTON_COUNT; i++) {
+	// 		if ((buttons & 1) != 0 && !super.isButtonPressed (i, controller)) {
+	// 			return false;
+	// 		}
+	// 		buttons >>>= 1;
+	// 	}
+	// 	return true;
+	// }
+
+	public int getButtonCount (int controller) {
+		return AppInput.BUTTON_COUNT;
+	}
+
+	@Override
+	public boolean isControlPressed (int buttons, int controller) {
+		for (int i = 0, j = 0, l = AppInput.BUTTON_COUNT; i < l; i++, j++) {
+			if (i == 6 || i == 7) {
+				if ((buttons & 1) != 0 && (controllerPressed [controller] & (1 << (i - 6))) != 0) {
+					controllerPressed [controller] ^= (1 << (i - 6));
+					return true;
+				}
+				j--;
+			} else if ((buttons & 1) != 0) {
+				switch (i) {
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+						try {
+							if (super.isControlPressed ((j - 8) % 4, controller)) {
+								return true;
+							}
+						} catch (IndexOutOfBoundsException exception) {}
+						break;
+					default:
+						try {
+							if (super.isControlPressed (j + 4, controller)) {
+								return true;
+							}
+						} catch (IndexOutOfBoundsException exception) {}
+				}
+			}
+			buttons >>>= 1;
+		}
+		return false;
+	}
+
+	// public boolean areControlsPressed (int buttons, int controller) {
+	// 	for (int i = 0; i < AppInput.BUTTON_COUNT + 4; i++) {
+	// 		if ((buttons & 1) != 0 && !super.isControlPressed (buttons, controller)) {
+	// 			return false;
+	// 		}
+	// 		buttons >>>= 1;
+	// 	}
+	// 	return true;
+	// }
+
+	public int getControlCount (int controller) {
+		return AppInput.BUTTON_COUNT;
+	}
+
+	@Override
+	public String getAxisName (int axis, int controller) {
+		try {
+			if (axis < AppInput.AXIS_COUNT) {
+				return super.getAxisName (controller, axis ^ 1);
+			}
+		} catch (IndexOutOfBoundsException exception) {}
+		return "";
+	}
+
+	@Override
+	public float getAxisValue (int axis, int controller) {
+		try {
+			if (axis < AppInput.AXIS_COUNT) {
+				return super.getAxisValue (controller, axis ^ 1);
+			}
+		} catch (IndexOutOfBoundsException exception) {}
+		return 0;
+	}
+
+	@Override
+	public int getAxisCount (int controller) {
+		return AppInput.AXIS_COUNT;
+	}
+
+	@Override
+	public void clearControlPressedRecord () {
+		super.clearControlPressedRecord ();
+		for (int i = 0, l = this.getControllerCount (); i < l; i++) {
+			this.controllerPressed [i] = 0;
+		}
+	}
+
+}
