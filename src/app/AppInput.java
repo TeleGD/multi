@@ -31,6 +31,7 @@ public class AppInput extends Input {
 	private boolean pollFlag;
 	private int [] controls;
 	private int [] controllerPressed;
+	private int [] controllerMoved;
 
 	public AppInput (int height) {
 		super (height);
@@ -38,6 +39,7 @@ public class AppInput extends Input {
 		int controllerCount = this.getControllerCount ();
 		this.controls = new int [controllerCount];
 		this.controllerPressed = new int [controllerCount];
+		this.controllerMoved = new int [controllerCount];
 	}
 
 	@Override
@@ -46,15 +48,21 @@ public class AppInput extends Input {
 		super.poll (width, height);
 		for (int i = 0, l = this.getControllerCount (); i < l; i++) {
 			try {
-				if (((this.controls [i] & 1) == 0) == super.getAxisValue (i, 4) > .5f) {
+				float value = super.getAxisValue (i, 4);
+				if (((this.controllerMoved [i] & 16) == 0)) {
+					if (value == -1f) {
+						value = 0f;
+					} else {
+						this.controllerMoved [i] |= 16;
+					}
+				}
+				if (((this.controls [i] & 1) == 0) == value > .5f) {
 					this.controls [i] ^= 1;
 					if ((this.controls [i] & 1) != 0) {
 						this.controllerPressed [i] |= 1;
 					}
 				}
-			} catch (IndexOutOfBoundsException exception) {}
-			try {
-				if (((this.controls [i] & 2) == 0) == super.getAxisValue (i, 4) < -.5f) {
+				if (((this.controls [i] & 2) == 0) == value < -.5f) {
 					this.controls [i] ^= 2;
 					if ((this.controls [i] & 2) != 0) {
 						this.controllerPressed [i] |= 2;
@@ -98,15 +106,35 @@ public class AppInput extends Input {
 		for (int i = 0, j = 0, l = AppInput.BUTTON_COUNT; i < l; i++, j++) {
 			if (i == 6) {
 				try {
-					if ((buttons & 1) != 0 && super.getAxisValue (controller, 4) > .5f) {
-						return true;
+					if ((buttons & 1) != 0) {
+						float value = super.getAxisValue (controller, 4);
+						if (((this.controllerMoved [controller] & 16) == 0)) {
+							if (value == -1f) {
+								value = 0f;
+							} else {
+								this.controllerMoved [controller] |= 16;
+							}
+						}
+						if (value > .5f) {
+							return true;
+						}
 					}
 				} catch (IndexOutOfBoundsException exception) {}
 				j--;
 			} else if (i == 7) {
 				try {
-					if ((buttons & 1) != 0 && super.getAxisValue (controller, 4) < -.5f) {
-						return true;
+					if ((buttons & 1) != 0) {
+						float value = super.getAxisValue (controller, 4);
+						if (((this.controllerMoved [controller] & 16) == 0)) {
+							if (value == -1f) {
+								value = 0f;
+							} else {
+								this.controllerMoved [controller] |= 16;
+							}
+						}
+						if (value < -.5f) {
+							return true;
+						}
 					}
 				} catch (IndexOutOfBoundsException exception) {}
 				j--;
@@ -145,15 +173,7 @@ public class AppInput extends Input {
 		return false;
 	}
 
-	// public boolean areButtonsPressed (int buttons, int controller) {
-	// 	for (int i = 0; i < AppInput.BUTTON_COUNT; i++) {
-	// 		if ((buttons & 1) != 0 && !super.isButtonPressed (i, controller)) {
-	// 			return false;
-	// 		}
-	// 		buttons >>>= 1;
-	// 	}
-	// 	return true;
-	// }
+	// public boolean areButtonsPressed (int buttons, int controller) {}
 
 	public int getButtonCount (int controller) {
 		return AppInput.BUTTON_COUNT;
@@ -193,15 +213,7 @@ public class AppInput extends Input {
 		return false;
 	}
 
-	// public boolean areControlsPressed (int buttons, int controller) {
-	// 	for (int i = 0; i < AppInput.BUTTON_COUNT + 4; i++) {
-	// 		if ((buttons & 1) != 0 && !super.isControlPressed (buttons, controller)) {
-	// 			return false;
-	// 		}
-	// 		buttons >>>= 1;
-	// 	}
-	// 	return true;
-	// }
+	// public boolean areControlsPressed (int buttons, int controller) {}
 
 	public int getControlCount (int controller) {
 		return AppInput.BUTTON_COUNT;
@@ -221,10 +233,17 @@ public class AppInput extends Input {
 	public float getAxisValue (int axis, int controller) {
 		try {
 			if (axis < AppInput.AXIS_COUNT) {
-				return super.getAxisValue (controller, axis ^ 1);
+				float value = super.getAxisValue (controller, axis ^ 1);
+				if ((this.controllerMoved [controller] & (1 << axis)) != 0) {
+					return value;
+				} else if (value != -1f) {
+					System.out.println ("<2>");
+					this.controllerMoved [controller] |= (1 << axis);
+					return value;
+				}
 			}
 		} catch (IndexOutOfBoundsException exception) {}
-		return 0;
+		return 0f;
 	}
 
 	@Override

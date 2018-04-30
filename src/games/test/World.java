@@ -42,7 +42,7 @@ public class World extends AppWorld {
 		this.players = new Player [n];
 		for (int i = 0; i < n; i++) {
 			this.players [i] = new Player (appGame.appPlayers.get (i));
-		};
+		}
 	}
 
 	@Override

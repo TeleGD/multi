@@ -44,7 +44,7 @@ public class Games extends AppMenu {
 					AppGame appGame = (AppGame) game;
 					for (int i = appGame.appPlayers.size () - 1; i >= 0; i--) {
 						appGame.availableColorIDs.add (0, appGame.appPlayers.remove (i).getColorID ());
-					};
+					}
 					appGame.enterState (AppGame.PAGES_WELCOME, new FadeOutTransition (), new FadeInTransition ());
 				}
 			}

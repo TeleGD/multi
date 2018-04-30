@@ -72,8 +72,6 @@ public abstract class AppPage extends BasicGameState {
 	private int hintBlinkPeriod;
 	private int hintBlinkCountdown;
 
-	public AppPage () {}
-
 	@Override
 	public void init (GameContainer container, StateBasedGame game) {
 		this.titleBoxWidth = this.contentWidth;

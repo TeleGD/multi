@@ -153,7 +153,7 @@ public abstract class AppMenu extends AppPage {
 					boolean menuBlink = this.menuBlink && this.menuBlinkCountdown <= this.menuBlinkPeriod / 2;
 					if (!menuBlink) {
 						context.setColor (AppPage.highlightColor);
-					};
+					}
 					context.drawString (">>", this.menuX + dx, this.menuY + dy);
 					context.drawString ("<<", this.menuX + this.menuWidth - dx, this.menuY + dy);
 					if (!menuBlink) {
