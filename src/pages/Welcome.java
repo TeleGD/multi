@@ -16,8 +16,6 @@ import app.AppPlayer;
 
 public class Welcome extends AppPage {
 
-	private int ID;
-
 	private Image logo;
 
 	private boolean logoVisibility;
@@ -36,12 +34,7 @@ public class Welcome extends AppPage {
 	private int logoNaturalHeight;
 
 	public Welcome (int ID) {
-		this.ID = ID;
-	}
-
-	@Override
-	public int getID () {
-		return this.ID;
+		super (ID);
 	}
 
 	@Override

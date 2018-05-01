@@ -237,7 +237,6 @@ public class AppInput extends Input {
 				if ((this.controllerMoved [controller] & (1 << axis)) != 0) {
 					return value;
 				} else if (value != -1f) {
-					System.out.println ("<2>");
 					this.controllerMoved [controller] |= (1 << axis);
 					return value;
 				}

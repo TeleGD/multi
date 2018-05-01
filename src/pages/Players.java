@@ -20,7 +20,6 @@ public class Players extends AppPage {
 
 	// static private int playersLineHeight = 30;
 
-	private int ID;
 	private int previousID;
 	private int nextID;
 
@@ -34,12 +33,7 @@ public class Players extends AppPage {
 	private int playersColumnWidth;
 
 	public Players (int ID) {
-		this.ID = ID;
-	}
-
-	@Override
-	public int getID () {
-		return this.ID;
+		super (ID);
 	}
 
 	@Override

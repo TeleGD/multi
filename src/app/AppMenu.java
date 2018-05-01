@@ -43,6 +43,10 @@ public abstract class AppMenu extends AppPage {
 	private int menuBlinkPeriod;
 	private int menuBlinkCountdown;
 
+	public AppMenu (int ID) {
+		super (ID);
+	}
+
 	@Override
 	public void init (GameContainer container, StateBasedGame game) {
 		super.init (container, game);

@@ -13,20 +13,13 @@ import app.AppWorld;
 
 public class World extends AppWorld {
 
-	private int ID;
-
 	private int width;
 	private int height;
 
 	private Player [] players;
 
 	public World (int ID) {
-		this.ID = ID;
-	}
-
-	@Override
-	public int getID () {
-		return this.ID;
+		super (ID);
 	}
 
 	@Override
