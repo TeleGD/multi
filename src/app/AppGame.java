@@ -11,12 +11,15 @@ public class AppGame extends StateBasedGame {
 	public static final int PAGES_WELCOME = 0;
 	public static final int PAGES_GAMES = 1;
 	public static final int PAGES_PLAYERS = 2;
-	public static final int GAMES_TEST_WORLD = 3;
+	public static final int PAGES_PAUSE = 3;
+	// public static final int PAGES_SCORES = 4;
+	public static final int GAMES_TEST_WORLD = 4;
 
 	public static final String [] TITLES = new String [] {
 		"Accueil",
 		"Menu des jeux",
 		"Menu des joueurs",
+		"Pause",
 		"Jeu de test"
 	};
 
@@ -37,6 +40,7 @@ public class AppGame extends StateBasedGame {
 		this.addState (new pages.Welcome (AppGame.PAGES_WELCOME));
 		this.addState (new pages.Games (AppGame.PAGES_GAMES));
 		this.addState (new pages.Players (AppGame.PAGES_PLAYERS));
+		this.addState (new pages.Pause (AppGame.PAGES_PAUSE));
 		this.addState (new games.test.World (AppGame.GAMES_TEST_WORLD));
 	}
 

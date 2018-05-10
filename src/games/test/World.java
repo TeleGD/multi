@@ -3,12 +3,9 @@ package games.test;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import app.AppGame;
 import app.AppInput;
-import app.AppPlayer;
 import app.AppWorld;
 
 public class World extends AppWorld {
@@ -50,8 +47,8 @@ public class World extends AppWorld {
 
 	@Override
 	public void update (GameContainer container, StateBasedGame game, int delta) {
+		super.update (container, game, delta);
 		AppInput appInput = (AppInput) container.getInput ();
-		AppGame appGame = (AppGame) game;
 		for (Player player: this.players) {
 			String name = player.getName ();
 			int controllerID = player.getControllerID ();
@@ -71,9 +68,6 @@ public class World extends AppWorld {
 					System.out.println ("(" + name + ").getAxisValue: " + i + " -> " + j);
 				}
 			}
-		}
-		if (appInput.isKeyPressed (AppInput.KEY_ESCAPE)) {
-			appGame.enterState (AppGame.PAGES_GAMES, new FadeOutTransition (), new FadeInTransition ());
 		}
 	}
 
