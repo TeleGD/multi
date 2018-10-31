@@ -30,8 +30,8 @@ public class Games extends AppMenu {
 					Pause pause = (Pause) game.getState (AppGame.PAGES_PAUSE);
 					players.setPreviousID (AppGame.PAGES_GAMES);
 					players.setNextID (AppGame.GAMES_TEST_WORLD);
-					pause.setPreviousID (AppGame.PAGES_GAMES);
-					pause.setNextID (AppGame.GAMES_TEST_WORLD);
+					pause.setPreviousID (AppGame.GAMES_TEST_WORLD);
+					pause.setNextID (AppGame.PAGES_GAMES);
 					game.enterState (AppGame.PAGES_PLAYERS);
 				}
 			},

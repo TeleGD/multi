@@ -4,12 +4,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import app.utils.FontUtils;
 
-public abstract class AppPage extends BasicGameState {
+public abstract class AppPage extends AppState {
 
 	static protected Color foregroundColor = Color.white;
 	static protected Color backgroundColor = Color.black;
@@ -72,15 +71,8 @@ public abstract class AppPage extends BasicGameState {
 	private int hintBlinkPeriod;
 	private int hintBlinkCountdown;
 
-	private int ID;
-
 	public AppPage (int ID) {
-		this.ID = ID;
-	}
-
-	@Override
-	public int getID () {
-		return this.ID;
+		super (ID);
 	}
 
 	@Override

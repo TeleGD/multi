@@ -10,9 +10,6 @@ import app.AppWorld;
 
 public class World extends AppWorld {
 
-	private int width;
-	private int height;
-
 	private Player [] players;
 
 	public World (int ID) {
@@ -21,12 +18,13 @@ public class World extends AppWorld {
 
 	@Override
 	public void init (GameContainer container, StateBasedGame game) {
-		this.width = container.getWidth ();
-		this.height = container.getHeight ();
+		/* Méthode exécutée une unique fois au chargement du programme */
+		super.init (container, game);
 	}
 
 	@Override
 	public void play (GameContainer container, StateBasedGame game) {
+		/* Méthode exécutée une unique fois au début du jeu */
 		AppGame appGame = (AppGame) game;
 		int n = appGame.appPlayers.size ();
 		this.players = new Player [n];
@@ -35,18 +33,21 @@ public class World extends AppWorld {
 		}
 	}
 
-	@Override
-	public void enter (GameContainer container, StateBasedGame game) {
-		AppInput appInput = (AppInput) container.getInput ();
-		appInput.clearKeyPressedRecord ();
-		appInput.clearControlPressedRecord ();
+	public void stop (GameContainer container, StateBasedGame game) {
+		/* Méthode exécutée une unique fois à la fin du jeu */
+	}
+
+	public void resume (GameContainer container, StateBasedGame game) {
+		/* Méthode exécutée lors de la reprise du jeu */
+	}
+
+	public void pause (GameContainer container, StateBasedGame game) {
+		/* Méthode exécutée lors de la mise en pause du jeu */
 	}
 
 	@Override
-	public void leave (GameContainer container, StateBasedGame game) {}
-
-	@Override
 	public void update (GameContainer container, StateBasedGame game, int delta) {
+		/* Méthode exécutée environ 60 fois par seconde */
 		super.update (container, game, delta);
 		AppInput appInput = (AppInput) container.getInput ();
 		for (Player player: this.players) {
@@ -72,6 +73,9 @@ public class World extends AppWorld {
 	}
 
 	@Override
-	public void render (GameContainer container, StateBasedGame game, Graphics context) {}
+	public void render (GameContainer container, StateBasedGame game, Graphics context) {
+		/* Méthode exécutée environ 60 fois par seconde */
+		super.render (container, game, context);
+	}
 
 }
