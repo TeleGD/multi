@@ -3,14 +3,13 @@ package pages;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.opengl.EmptyImageData;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import app.AppGame;
 import app.AppInput;
+import app.AppLoader;
 import app.AppPage;
 import app.AppPlayer;
 
@@ -57,13 +56,7 @@ public class Welcome extends AppPage {
 		this.hintBlink = true;
 
 		this.setHint ("PRESS [START]");
-		Image logo;
-		try {
-			logo = new Image ("images/logo.png");
-		} catch (SlickException exception) {
-			logo = new Image (new EmptyImageData (0, 0));
-		}
-		this.setLogo (logo);
+		this.setLogo (AppLoader.loadPicture ("/images/logo.png"));
 	}
 
 	@Override
@@ -120,11 +113,13 @@ public class Welcome extends AppPage {
 		this.logo = logo.copy ();
 		this.logoNaturalWidth = logo.getWidth ();
 		this.logoNaturalHeight = logo.getHeight ();
-		this.logoWidth = Math.min (this.logoBoxWidth, this.logoNaturalWidth);
-		this.logoHeight = Math.min (this.logoBoxHeight, this.logoNaturalHeight);
-		if (this.logoWidth * this.logoNaturalHeight < this.logoNaturalWidth * this.logoHeight) {
+		this.logoWidth = Math.min (Math.max (this.logoBoxWidth, 0), this.logoNaturalWidth);
+		this.logoHeight = Math.min (Math.max (this.logoBoxHeight, 0), this.logoNaturalHeight);
+		int a = this.logoWidth * this.logoNaturalHeight;
+		int b = this.logoNaturalWidth * this.logoHeight;
+		if (a < b) {
 			this.logoHeight = this.logoNaturalHeight * this.logoWidth / this.logoNaturalWidth;
-		} else {
+		} else if (b < a) {
 			this.logoWidth = this.logoNaturalWidth * this.logoHeight / this.logoNaturalHeight;
 		}
 		this.logoX = this.logoBoxX + (this.logoBoxWidth - this.logoWidth) / 2;

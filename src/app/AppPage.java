@@ -6,23 +6,37 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
-import app.utils.FontUtils;
-
 public abstract class AppPage extends AppState {
 
-	static protected Color foregroundColor = Color.white;
-	static protected Color backgroundColor = Color.black;
-	static protected Color highlightColor = Color.red;
+	static protected Color foregroundColor;
+	static protected Color backgroundColor;
+	static protected Color highlightColor;
 
-	static protected Font titleFont = FontUtils.loadFont ("PressStart2P.ttf", java.awt.Font.BOLD, 40, false);
-	static protected Font subtitleFont = FontUtils.loadFont ("Kalinga", java.awt.Font.BOLD, 24, true);
-	static protected Font hintFont = FontUtils.loadFont ("PressStart2P.ttf", java.awt.Font.PLAIN, 20, false);
+	static protected Font titleFont;
+	static protected Font subtitleFont;
+	static protected Font hintFont;
 
-	static protected int titleLineHeight = 50;
-	static protected int subtitleLineHeight = 30;
-	static protected int hintLineHeight = 30;
+	static protected int titleLineHeight;
+	static protected int subtitleLineHeight;
+	static protected int hintLineHeight;
 
-	static protected int gap = 40;
+	static protected int gap;
+
+	static {
+		AppPage.foregroundColor = Color.white;
+		AppPage.backgroundColor = Color.black;
+		AppPage.highlightColor = Color.red;
+
+		AppPage.titleFont = AppLoader.loadFont ("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, 40);
+		AppPage.subtitleFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+		AppPage.hintFont = AppLoader.loadFont ("/fonts/press-start-2p.ttf", java.awt.Font.PLAIN, 20);
+
+		AppPage.titleLineHeight = 50;
+		AppPage.subtitleLineHeight = 30;
+		AppPage.hintLineHeight = 30;
+
+		AppPage.gap = 40;
+	}
 
 	private String title;
 	private String subtitle;

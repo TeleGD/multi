@@ -12,13 +12,18 @@ import app.AppGame;
 import app.AppInput;
 import app.AppPlayer;
 import app.elements.MenuItem;
-import app.utils.FontUtils;
 
 public abstract class AppMenu extends AppPage {
 
-	static private Font menuFont = FontUtils.loadFont ("Kalinga", java.awt.Font.BOLD, 14, true);
+	static private Font menuFont;
 
-	static private int menuLineHeight = 30;
+	static private int menuLineHeight;
+
+	static {
+		AppMenu.menuFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+
+		AppMenu.menuLineHeight = 30;
+	}
 
 	private List <MenuItem> menu;
 
@@ -50,6 +55,7 @@ public abstract class AppMenu extends AppPage {
 	@Override
 	public void init (GameContainer container, StateBasedGame game) {
 		super.init (container, game);
+
 		this.menuBoxX = this.contentX;
 		this.menuBoxY = this.subtitleBoxY + this.subtitleBoxHeight + AppPage.gap;
 		this.menuBoxWidth = this.contentWidth;

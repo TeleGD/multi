@@ -9,16 +9,22 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import app.AppGame;
 import app.AppInput;
+import app.AppLoader;
 import app.AppPage;
 import app.AppPlayer;
 import app.AppWorld;
-import app.utils.FontUtils;
 
 public class Players extends AppPage {
 
-	static private Font playersFont = FontUtils.loadFont ("Kalinga", java.awt.Font.BOLD, 14, true);
+	static private Font playersFont;
 
-	// static private int playersLineHeight = 30;
+	// static private int playersLineHeight;
+
+	static {
+		Players.playersFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+
+		// Players.playersLineHeight = 30;
+	}
 
 	private int previousID;
 	private int nextID;
