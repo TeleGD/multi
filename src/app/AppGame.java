@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -49,5 +50,9 @@ public abstract class AppGame extends StateBasedGame {
 	}
 
 	public abstract void init ();
+
+	public final void poll (GameContainer container, Input i) {
+		((AppState) super.getCurrentState ()).poll (container, this, i);
+	}
 
 }

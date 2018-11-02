@@ -2,6 +2,7 @@ package app;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -51,6 +52,9 @@ public abstract class AppWorld extends AppState {
 	}
 
 	@Override
+	public void poll (GameContainer container, StateBasedGame game, Input user) {}
+
+	@Override
 	public void update (GameContainer container, StateBasedGame game, int delta) {
 		AppInput appInput = (AppInput) container.getInput ();
 		AppGame appGame = (AppGame) game;
@@ -71,11 +75,11 @@ public abstract class AppWorld extends AppState {
 	@Override
 	public void render (GameContainer container, StateBasedGame game, Graphics context) {}
 
-	public void setState (int state) {
+	public final void setState (int state) {
 		this.state = state;
 	}
 
-	public int getState () {
+	public final int getState () {
 		return this.state;
 	}
 

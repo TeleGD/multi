@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class AppPage extends AppState {
@@ -118,6 +119,19 @@ public abstract class AppPage extends AppState {
 		this.setSubtitle ("");
 		this.setHint ("");
 	}
+
+	@Override
+	public final void enter (GameContainer container, StateBasedGame game) {
+		AppInput appInput = (AppInput) container.getInput ();
+		appInput.clearKeyPressedRecord ();
+		appInput.clearControlPressedRecord ();
+	}
+
+	@Override
+	public final void leave (GameContainer container, StateBasedGame game) {}
+
+	@Override
+	public void poll (GameContainer container, StateBasedGame game, Input user) {}
 
 	@Override
 	public void update (GameContainer container, StateBasedGame game, int delta) {

@@ -3,6 +3,7 @@ package pages;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -14,6 +15,10 @@ import app.AppPage;
 import app.AppPlayer;
 
 public class Welcome extends AppPage {
+
+	private boolean backFlag;
+	private boolean forwardFlag;
+	private int gameMasterID;
 
 	private Image logo;
 
@@ -41,6 +46,10 @@ public class Welcome extends AppPage {
 		super.initSize (container, game, 600, 400);
 		super.init (container, game);
 
+		this.backFlag = false;
+		this.forwardFlag = false;
+		this.gameMasterID = AppInput.ANY_CONTROLLER;
+
 		this.hintBoxX = this.contentX;
 		this.hintBoxY = this.contentY;
 
@@ -60,30 +69,40 @@ public class Welcome extends AppPage {
 	}
 
 	@Override
-	public void update (GameContainer container, StateBasedGame game, int  delta) {
-		super.update (container, game, delta);
-		AppInput appInput = (AppInput) container.getInput ();
-		AppGame appGame = (AppGame) game;
-		if (appInput.isKeyDown (AppInput.KEY_ESCAPE)) {
-			container.exit ();
+	public void poll (GameContainer container, StateBasedGame game, Input user) {
+		super.poll (container, game, user);
+		AppInput input = (AppInput) container.getInput ();
+		this.backFlag = false;
+		this.forwardFlag = false;
+		this.gameMasterID = AppInput.ANY_CONTROLLER;
+		if (input.isKeyDown (AppInput.KEY_ESCAPE)) {
+			this.backFlag = true;
+		} else if (input.isKeyDown (AppInput.KEY_ENTER)) {
+			this.forwardFlag = true;
+			this.gameMasterID = 0; /* Magic number */
 		} else {
-			int gameMasterID = AppInput.ANY_CONTROLLER;
-			if (appInput.isKeyDown (AppInput.KEY_ENTER)) {
-				gameMasterID = 0; /* Magic number */
-			} else {
-				for (int i = appInput.getControllerCount () - 1; i >= 0; i--) {
-					if (appInput.isButtonPressed (AppInput.BUTTON_A | AppInput.BUTTON_PLUS, i)) {
-						gameMasterID = i;
-						break;
-					}
+			for (int i = input.getControllerCount () - 1; i >= 0; i--) {
+				if (input.isButtonPressed (AppInput.BUTTON_A | AppInput.BUTTON_PLUS, i)) {
+					this.forwardFlag = true;
+					this.gameMasterID = i;
+					break;
 				}
 			}
-			if (gameMasterID != AppInput.ANY_CONTROLLER) {
-				int colorID = appGame.availableColorIDs.remove (0);
-				String name = "Joueur " + AppPlayer.COLOR_NAMES [colorID]; // TODO: set user name
-				appGame.appPlayers.add (0, new AppPlayer (colorID, gameMasterID, name, AppInput.BUTTON_A | AppInput.BUTTON_PLUS));
-				appGame.enterState (AppGame.PAGES_GAMES, new FadeOutTransition (), new FadeInTransition ());
-			}
+		}
+	}
+
+	@Override
+	public void update (GameContainer container, StateBasedGame game, int delta) {
+		super.update (container, game, delta);
+		AppGame appGame = (AppGame) game;
+		if (this.backFlag) {
+			container.exit ();
+		}
+		if (this.forwardFlag) {
+			int colorID = appGame.availableColorIDs.remove (0);
+			String name = "Joueur " + AppPlayer.COLOR_NAMES [colorID]; // TODO: set user name
+			appGame.appPlayers.add (0, new AppPlayer (colorID, this.gameMasterID, name, AppInput.BUTTON_A | AppInput.BUTTON_PLUS));
+			appGame.enterState (AppGame.PAGES_GAMES, new FadeOutTransition (), new FadeInTransition ());
 		}
 	}
 
