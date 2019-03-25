@@ -1,7 +1,7 @@
 package app;
 
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -44,10 +44,10 @@ public abstract class AppWorld extends AppState {
 	@Override
 	public final void leave (GameContainer container, StateBasedGame game) {
 		if (this.state == 1) {
+			this.pause (container, game);
+		} else if (this.state == 3) {
 			this.stop (container, game);
 			this.state = 0; // TODO: remove
-		} else if (this.state == 3) {
-			this.pause (container, game);
 		}
 	}
 
@@ -65,7 +65,7 @@ public abstract class AppWorld extends AppState {
 		if (BUTTON_PLUS == ((gameMasterRecord & AppInput.BUTTON_PLUS) == 0)) {
 			gameMasterRecord ^= AppInput.BUTTON_PLUS;
 			if (BUTTON_PLUS) {
-				this.state = 3;
+				this.state = 1;
 				appGame.enterState (AppGame.PAGES_PAUSE, new FadeOutTransition (), new FadeInTransition ());
 			}
 		}

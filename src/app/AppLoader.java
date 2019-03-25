@@ -1,12 +1,13 @@
 package app;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.newdawn.slick.openal.SoundStore;
-// import org.newdawn.slick.opengl.InternalTextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class AppLoader {
 
@@ -18,9 +19,7 @@ public class AppLoader {
 		AppLoader.fontList = new HashMap <String, Map <Integer, Map <Integer, AppFont>>> ();
 		AppLoader.pictureList = new HashMap <String, AppPicture> ();
 		AppLoader.audioList = new HashMap <String, AppAudio> ();
-		// InternalTextureLoader.get ().setDeferredLoading (true);
 		SoundStore.get ().init ();
-		// SoundStore.get ().setDeferredLoading (true);
 	}
 
 	private static InputStream openStream (String filename) {
@@ -29,6 +28,11 @@ public class AppLoader {
 			try {
 				stream = new FileInputStream (System.class.getResource (filename).getPath ());
 			} catch (Exception error) {}
+			if (stream == null) {
+				try {
+					stream = ResourceLoader.getResourceAsStream (filename.replaceAll ("/+", "/").substring (1).replace ("/", File.separator));
+				} catch (Exception error) {}
+			}
 		}
 		return stream;
 	}
