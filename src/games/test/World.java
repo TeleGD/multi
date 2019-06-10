@@ -1,5 +1,9 @@
 package games.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -7,12 +11,17 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppGame;
 import app.AppInput;
+import app.AppLoader;
 import app.AppWorld;
 
 public class World extends AppWorld {
 
 	private Player [] players;
 	private String log;
+	private int maxLineCount;
+	private List <String> lines;
+	private Font lineFont;
+	private int lineHeight;
 
 	public World (int ID) {
 		super (ID);
@@ -34,6 +43,10 @@ public class World extends AppWorld {
 			this.players [i] = new Player (appGame.appPlayers.get (i));
 		}
 		this.log = "";
+		this.maxLineCount = 20;
+		this.lines = new ArrayList <String> ();
+		this.lineFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+		this.lineHeight = 30;
 		System.out.println ("PLAY");
 	}
 
@@ -60,24 +73,38 @@ public class World extends AppWorld {
 		/* Méthode exécutée environ 60 fois par seconde */
 		super.poll (container, game, user);
 		AppInput input = (AppInput) user;
-		this.log = "";
 		for (Player player: this.players) {
 			String name = player.getName ();
 			int controllerID = player.getControllerID ();
 			for (int i = 0, l = input.getControlCount (controllerID); i < l; i++) {
 				if (input.isControlPressed (1 << i, controllerID)) {
-					this.log += "(" + name + ").isControlPressed: " + i + "\n";
+					String line = "(" + name + ").isControlPressed: " + i + "\n";
+					if (this.lines.size () == this.maxLineCount) {
+						this.lines.remove (0);
+					}
+					this.lines.add (line);
+					this.log += line;
 				}
 			}
 			for (int i = 0, l = input.getButtonCount (controllerID); i < l; i++) {
 				if (input.isButtonPressed (1 << i, controllerID)) {
-					this.log += "(" + name + ").isButtonPressed: " + i + "\n";
+					String line = "(" + name + ").isButtonPressed: " + i + "\n";
+					if (this.lines.size () == this.maxLineCount) {
+						this.lines.remove (0);
+					}
+					this.lines.add (line);
+					this.log += line;
 				}
 			}
 			for (int i = 0, l = input.getAxisCount (controllerID); i < l; i++) {
 				float j = input.getAxisValue (i, controllerID);
 				if (j <= -.5f || j >= .5f) {
-					this.log += "(" + name + ").getAxisValue: " + i + " -> " + j + "\n";
+					String line = "(" + name + ").getAxisValue: " + i + " -> " + j + "\n";
+					if (this.lines.size () == this.maxLineCount) {
+						this.lines.remove (0);
+					}
+					this.lines.add (line);
+					this.log += line;
 				}
 			}
 		}
@@ -87,14 +114,22 @@ public class World extends AppWorld {
 	public void update (GameContainer container, StateBasedGame game, int delta) {
 		/* Méthode exécutée environ 60 fois par seconde */
 		super.update (container, game, delta);
+		if (this.log.length () != 0) {
+			System.out.print (this.log);
+			this.log = "";
+		}
 	}
 
 	@Override
 	public void render (GameContainer container, StateBasedGame game, Graphics context) {
 		/* Méthode exécutée environ 60 fois par seconde */
 		super.render (container, game, context);
-		if (this.log.length () != 0) {
-			System.out.print (this.log);
+		context.setFont (this.lineFont);
+		int x = 10;
+		int y = 10;
+		for (String line: this.lines) {
+			context.drawString (line, x, y + (this.lineHeight - this.lineFont.getHeight (line)) / 2);
+			y += this.lineHeight;
 		}
 	}
 

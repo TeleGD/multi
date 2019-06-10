@@ -17,7 +17,7 @@ public class AppInput extends Input {
 	public static final int BUTTON_SL = 1024;
 	public static final int BUTTON_SR = 2048;
 	public static final int BUTTON_UP = 4096;
-	public static final int BUTTON_DOWN = 80192;
+	public static final int BUTTON_DOWN = 8192;
 	public static final int BUTTON_LEFT = 16384;
 	public static final int BUTTON_RIGHT = 32768;
 	public static final int AXIS_XL = 0;
