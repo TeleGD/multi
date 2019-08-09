@@ -33,11 +33,14 @@ public class AppContainer extends AppGameContainer {
 	private float scale;
 	private float offsetX;
 	private float offsetY;
+	private boolean inputToClip;
+	private boolean graphicsToClip;
 
 	public AppContainer (Game game, int width, int height, boolean fullscreen) throws SlickException {
 		super (game, width, height, fullscreen);
 	}
 
+	@Override
 	public void setDisplayMode (int width, int height, boolean fullscreen) throws SlickException {
 		this.windowWidth = width;
 		this.windowHeight = height;
@@ -71,8 +74,19 @@ public class AppContainer extends AppGameContainer {
 			this.canvasHeight = height;
 		}
 		super.setDisplayMode(width, height, fullscreen);
+		if (super.input != null) {
+			this.clipInput ();
+		} else {
+			this.inputToClip = true;
+		}
+		if (this.graphics != null) {
+			this.clipGraphics ();
+		} else {
+			this.graphicsToClip = true;
+		}
 	}
 
+	@Override
 	public void setFullscreen (boolean fullscreen) throws SlickException {
 		if (super.isFullscreen () == fullscreen) {
 			return;
@@ -83,6 +97,7 @@ public class AppContainer extends AppGameContainer {
 
 	// TODO initGL
 
+	@Override
 	protected void updateAndRender (int delta) throws SlickException {
 		if (super.smoothDeltas) {
 			if (super.getFPS () != 0) {
@@ -126,7 +141,7 @@ public class AppContainer extends AppGameContainer {
 			}
 			GL.glLoadIdentity ();
 			GL.glEnable (SGL.GL_SCISSOR_TEST);
-			((AppOutput) this.graphics).setCanvasClip (this.scale, this.offsetX, this.offsetY, this.canvasWidth, this.canvasHeight);
+			((AppOutput) this.graphics).restoreCanvasClip ();
 			this.graphics.resetTransform ();
 			this.graphics.resetFont ();
 			this.graphics.resetLineWidth ();
@@ -149,17 +164,23 @@ public class AppContainer extends AppGameContainer {
 		}
 	}
 
+	@Override
 	protected void initGL () {
 		if (super.input == null) {
 			super.input = new AppInput (super.height);
 		}
-		Graphics graphics = this.graphics;
-		this.graphics = null;
-		super.initGL ();
-		if (graphics != null) {
-			((AppOutput) graphics).setDimensions (super.width, super.height);
+		if (this.inputToClip) {
+			this.clipInput();
+			this.inputToClip = false;
 		}
-		this.graphics = graphics;
+		if (this.graphics != null) {
+			((AppOutput) this.graphics).setDimensions (super.width, super.height);
+			if (this.graphicsToClip) {
+				this.clipGraphics ();
+				this.graphicsToClip = false;
+			}
+		}
+		super.initGL ();
 	}
 
 	protected void initSystem () throws SlickException {
@@ -167,22 +188,38 @@ public class AppContainer extends AppGameContainer {
 		super.setMusicVolume (1f);
 		super.setSoundVolume (1f);
 		this.graphics = new AppOutput (super.width, super.height);
+		if (this.graphicsToClip) {
+			this.clipGraphics ();
+			this.graphicsToClip = false;
+		}
 		super.setDefaultFont (this.graphics.getFont ());
 	}
 
+	private void clipInput () {
+		((AppInput) super.input).setCanvasClip (this.scale, this.offsetX, this.offsetY);
+	}
+
+	private void clipGraphics () {
+		((AppOutput) this.graphics).setCanvasClip (this.scale, this.offsetX, this.offsetY, this.canvasWidth, this.canvasHeight);
+	}
+
+	@Override
 	public int getWidth() {
 		return this.windowWidth;
 	}
 
+	@Override
 	public int getHeight() {
 		return this.windowHeight;
 	}
 
+	@Override
 	@Deprecated
 	public Input getInput () {
 		return super.input;
 	}
 
+	@Override
 	@Deprecated
 	public Graphics getGraphics () {
 		return this.graphics;

@@ -10,7 +10,7 @@ public final class Main {
 		int height = 720;
 		boolean fullscreen = false;
 		String request = "Voulez-vous jouer en plein écran ?";
-		Object [] options = {
+		String [] options = {
 			"Oui",
 			"Non"
 		};
@@ -27,9 +27,7 @@ public final class Main {
 		if (returnValue == -1) {
 			return;
 		}
-		if (returnValue == 0) {
-			fullscreen = true;
-		}
+		fullscreen = returnValue == 0;
 		new AppGame (title, width, height, fullscreen) {
 
 			@Override

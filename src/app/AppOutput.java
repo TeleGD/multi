@@ -27,7 +27,6 @@ public class AppOutput extends Graphics {
 		this.offsetY = offsetY;
 		this.canvasWidth = canvasWidth;
 		this.canvasHeight = canvasHeight;
-		restoreCanvasClip ();
 	}
 
 	void restoreCanvasClip () {
@@ -42,11 +41,13 @@ public class AppOutput extends Graphics {
 
 	// TODO: clearWorldClip, setWorldClip, getWorldClip
 
+	@Override
 	public void clearClip () {
 		this.clip = null;
 		this.restoreCanvasClip ();
 	}
 
+	@Override
 	public void setClip (int x, int y, int width, int height) {
 		if (this.clip == null) {
 			this.clip = new Rectangle (x, y, width, height);
@@ -60,6 +61,7 @@ public class AppOutput extends Graphics {
 		GL.glScissor ((int) this.offsetX + x, super.screenHeight - (int) this.offsetY - y - height, width, height);
 	}
 
+	@Override
 	public void setClip (Rectangle rect) {
 		if (rect == null) {
 			this.clearClip ();
@@ -68,6 +70,7 @@ public class AppOutput extends Graphics {
 		this.setClip ((int) rect.getX (), (int) rect.getY (), (int) rect.getWidth (), (int) rect.getHeight ());
 	}
 
+	@Override
 	public Rectangle getClip () {
 		return this.clip;
 	}
