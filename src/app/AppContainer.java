@@ -125,15 +125,9 @@ public class AppContainer extends AppGameContainer {
 				GL.glClear (SGL.GL_COLOR_BUFFER_BIT | SGL.GL_DEPTH_BUFFER_BIT);
 			}
 			GL.glLoadIdentity ();
+			GL.glEnable (SGL.GL_SCISSOR_TEST);
+			((AppOutput) this.graphics).setCanvasClip (this.scale, this.offsetX, this.offsetY, this.canvasWidth, this.canvasHeight);
 			this.graphics.resetTransform ();
-			if (super.isFullscreen ()) {
-				GL.glEnable (SGL.GL_SCISSOR_TEST);
-				GL.glScissor ((int) this.offsetX, super.getScreenHeight () - (int) this.offsetY - this.canvasHeight, this.canvasWidth, this.canvasHeight);
-				this.graphics.translate (this.offsetX, this.offsetY);
-				this.graphics.scale (this.scale, this.scale);
-			} else {
-				GL.glDisable (SGL.GL_SCISSOR_TEST);
-			}
 			this.graphics.resetFont ();
 			this.graphics.resetLineWidth ();
 			this.graphics.setAntiAlias (false);
@@ -143,6 +137,7 @@ public class AppContainer extends AppGameContainer {
 				Log.error (e);
 				throw new SlickException ("Game.render() failure - check the game code.");
 			}
+			((AppOutput) this.graphics).restoreCanvasClip ();
 			this.graphics.resetTransform ();
 			if (super.isShowingFPS ()) {
 				super.getDefaultFont ().drawString (10, 10, "FPS: " + recordedFPS);
