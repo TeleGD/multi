@@ -1,6 +1,3 @@
-import java.awt.DisplayMode;
-import java.awt.GraphicsEnvironment;
-
 import javax.swing.JOptionPane;
 
 import app.AppGame;
@@ -27,26 +24,24 @@ public final class Main {
 			options,
 			options [0]
 		);
-		if (returnValue != -1) {
-			if (returnValue == 0) {
-				DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice ().getDisplayMode ();
-				width = display.getWidth ();
-				height = display.getHeight ();
-				fullscreen = true;
-			}
-			new AppGame (title, width, height, fullscreen) {
-
-				@Override
-				public void init () {
-					this.addState (new pages.Welcome (AppGame.PAGES_WELCOME));
-					this.addState (new pages.Games (AppGame.PAGES_GAMES));
-					this.addState (new pages.Players (AppGame.PAGES_PLAYERS));
-					this.addState (new pages.Pause (AppGame.PAGES_PAUSE));
-					this.addState (new games.test.World (AppGame.GAMES_TEST_WORLD));
-				}
-
-			};
+		if (returnValue == -1) {
+			return;
 		}
+		if (returnValue == 0) {
+			fullscreen = true;
+		}
+		new AppGame (title, width, height, fullscreen) {
+
+			@Override
+			public void init () {
+				this.addState (new pages.Welcome (AppGame.PAGES_WELCOME));
+				this.addState (new pages.Games (AppGame.PAGES_GAMES));
+				this.addState (new pages.Players (AppGame.PAGES_PLAYERS));
+				this.addState (new pages.Pause (AppGame.PAGES_PAUSE));
+				this.addState (new games.test.World (AppGame.GAMES_TEST_WORLD));
+			}
+
+		};
 	}
 
 }
