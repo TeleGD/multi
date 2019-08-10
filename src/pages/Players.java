@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import app.AppFont;
 import app.AppGame;
 import app.AppInput;
 import app.AppLoader;
@@ -21,7 +22,7 @@ public class Players extends AppPage {
 	// static private int playersLineHeight;
 
 	static {
-		Players.playersFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+		Players.playersFont = AppLoader.loadFont ("/fonts/vt323.ttf", AppFont.BOLD, 24);
 
 		// Players.playersLineHeight = 30;
 	}

@@ -7,8 +7,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import app.AppPlayer;
-
 public abstract class AppWorld extends AppState {
 
 	private int state;

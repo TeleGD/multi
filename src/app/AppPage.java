@@ -28,9 +28,9 @@ public abstract class AppPage extends AppState {
 		AppPage.backgroundColor = Color.black;
 		AppPage.highlightColor = Color.red;
 
-		AppPage.titleFont = AppLoader.loadFont ("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, 40);
-		AppPage.subtitleFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
-		AppPage.hintFont = AppLoader.loadFont ("/fonts/press-start-2p.ttf", java.awt.Font.PLAIN, 20);
+		AppPage.titleFont = AppLoader.loadFont ("/fonts/press-start-2p.ttf", AppFont.BOLD, 40);
+		AppPage.subtitleFont = AppLoader.loadFont ("/fonts/vt323.ttf", AppFont.BOLD, 24);
+		AppPage.hintFont = AppLoader.loadFont ("/fonts/press-start-2p.ttf", AppFont.PLAIN, 20);
 
 		AppPage.titleLineHeight = 50;
 		AppPage.subtitleLineHeight = 30;

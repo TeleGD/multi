@@ -9,9 +9,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
-import app.AppGame;
-import app.AppInput;
-import app.AppPlayer;
 import app.elements.MenuItem;
 
 public abstract class AppMenu extends AppPage {
@@ -21,7 +18,7 @@ public abstract class AppMenu extends AppPage {
 	static private int menuLineHeight;
 
 	static {
-		AppMenu.menuFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+		AppMenu.menuFont = AppLoader.loadFont ("/fonts/vt323.ttf", AppFont.BOLD, 24);
 
 		AppMenu.menuLineHeight = 30;
 	}

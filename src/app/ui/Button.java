@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import app.AppFont;
 import app.AppLoader;
 
 @SuppressWarnings("serial")
@@ -41,7 +42,7 @@ public class Button extends TGDComponent{
 		setTextColor(new Color(255,255,255));
 		setTextColorPressed(new Color(255,255,255));
 		setTextColorEntered(new Color(0,0,0));
-		setTextFont(AppLoader.loadFont("/fonts/vt323.ttf",java.awt.Font.BOLD,textSize));
+		setTextFont(AppLoader.loadFont("/fonts/vt323.ttf",AppFont.BOLD,textSize));
 
 		setPaddingTop(5);
 		setPaddingBottom(5);

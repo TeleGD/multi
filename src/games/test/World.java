@@ -3,12 +3,14 @@ package games.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+import app.AppFont;
 import app.AppGame;
 import app.AppInput;
 import app.AppLoader;
@@ -45,7 +47,7 @@ public class World extends AppWorld {
 		this.log = "";
 		this.maxLineCount = 20;
 		this.lines = new ArrayList <String> ();
-		this.lineFont = AppLoader.loadFont ("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+		this.lineFont = AppLoader.loadFont ("/fonts/vt323.ttf", AppFont.BOLD, 24);
 		this.lineHeight = 30;
 		System.out.println ("PLAY");
 	}
@@ -124,6 +126,7 @@ public class World extends AppWorld {
 	public void render (GameContainer container, StateBasedGame game, Graphics context) {
 		/* Méthode exécutée environ 60 fois par seconde */
 		super.render (container, game, context);
+		context.setColor (Color.white);
 		context.setFont (this.lineFont);
 		int x = 10;
 		int y = 10;

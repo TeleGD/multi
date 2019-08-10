@@ -95,8 +95,6 @@ public class AppContainer extends AppGameContainer {
 		super.getDelta ();
 	}
 
-	// TODO initGL
-
 	@Override
 	protected void updateAndRender (int delta) throws SlickException {
 		if (super.smoothDeltas) {

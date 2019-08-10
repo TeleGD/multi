@@ -10,6 +10,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import app.AppFont;
 import app.AppLoader;
 
 /**
@@ -74,12 +75,12 @@ public class TextField extends TGDComponent{
 		setPlaceHolder("Entrez votre texte...");
 		setPlaceHolderTextSize(15);
 		setPlaceHolderColor(new Color(140, 140, 140));
-		setPlaceHolderFont(AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.PLAIN, placeHolderTextSize));
+		setPlaceHolderFont(AppLoader.loadFont("/fonts/vt323.ttf", AppFont.PLAIN, placeHolderTextSize));
 
 		setText("");
 		setTextSize(15);
 		setTextColor(new Color(255, 255, 255));
-		setTextFont(AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, textSize));
+		setTextFont(AppLoader.loadFont("/fonts/vt323.ttf", AppFont.BOLD, textSize));
 
 		setPaddingLeft(10);
 		setPaddingRight(10);
