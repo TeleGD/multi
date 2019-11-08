@@ -11,21 +11,21 @@ public class Player {
 	private int controllerID;
 	private String name;
 
-	public Player (AppPlayer appPlayer) {
-		int colorID = appPlayer.getColorID ();
-		int controllerID = appPlayer.getControllerID ();
-		String name = appPlayer.getName ();
-		this.fillColor = AppPlayer.FILL_COLORS [colorID];
-		this.strokeColor = AppPlayer.STROKE_COLORS [colorID];
+	public Player(AppPlayer appPlayer) {
+		int colorID = appPlayer.getColorID();
+		int controllerID = appPlayer.getControllerID();
+		String name = appPlayer.getName();
+		this.fillColor = AppPlayer.FILL_COLORS[colorID];
+		this.strokeColor = AppPlayer.STROKE_COLORS[colorID];
 		this.controllerID = controllerID;
 		this.name = name;
 	}
 
-	public int getControllerID () {
+	public int getControllerID() {
 		return this.controllerID;
 	}
 
-	public String getName () {
+	public String getName() {
 		return this.name;
 	}
 
