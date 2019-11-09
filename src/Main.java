@@ -1,3 +1,5 @@
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import app.AppGame;
@@ -14,8 +16,10 @@ public final class Main {
 			"Oui",
 			"Non"
 		};
+		JFrame frame = new JFrame();
+		frame.setIconImage(new ImageIcon(System.class.getResource("/images/icon.png")).getImage());
 		int returnValue = JOptionPane.showOptionDialog(
-			null,
+			frame,
 			request,
 			title,
 			JOptionPane.YES_NO_OPTION,
@@ -24,6 +28,7 @@ public final class Main {
 			options,
 			options[0]
 		);
+		frame.dispose();
 		if (returnValue == -1) {
 			return;
 		}

@@ -40,6 +40,7 @@ public abstract class AppGame extends StateBasedGame {
 			container.setTargetFrameRate(60);
 			container.setVSync(true);
 			container.setShowFPS(false);
+			container.setIcon(System.class.getResource("/images/icon.png").getPath());
 			container.start();
 		} catch (SlickException error) {}
 	}
