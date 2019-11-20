@@ -1,8 +1,8 @@
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import app.AppGame;
+import app.AppLoader;
 
 public final class Main {
 
@@ -12,12 +12,12 @@ public final class Main {
 		int height = 720;
 		boolean fullscreen = false;
 		String request = "Voulez-vous jouer en plein écran ?";
-		String[] options = {
+		String[] options = new String[] {
 			"Oui",
 			"Non"
 		};
 		JFrame frame = new JFrame();
-		frame.setIconImage(new ImageIcon(System.class.getResource("/images/icon.png")).getImage());
+		frame.setIconImage(AppLoader.loadIcon("/images/icon.png").getImage());
 		int returnValue = JOptionPane.showOptionDialog(
 			frame,
 			request,
