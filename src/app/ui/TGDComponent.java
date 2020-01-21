@@ -19,6 +19,7 @@ public class TGDComponent extends Rectangle implements MouseListener, KeyListene
 	protected Color borderColor;
 	protected Color borderColorEntered;
 	protected Color borderColorPressed;
+	private Color backgroundColorFocused;
 
 	protected int borderWidth;
 	protected int cornerRadius;
@@ -36,6 +37,7 @@ public class TGDComponent extends Rectangle implements MouseListener, KeyListene
 	protected long time;
 
 	protected long timeInit;
+	protected boolean visible;
 
 	public TGDComponent(GameContainer container,float x, float y, float width, float height) {
 		super(x, y, width, height);
@@ -57,7 +59,8 @@ public class TGDComponent extends Rectangle implements MouseListener, KeyListene
 		setBackgroundColorPressed(null);
 		setBorderWidth(0);
 
-		hasFocus=true;
+		visible = true;
+		hasFocus = false;
 
 	}
 
@@ -66,12 +69,16 @@ public class TGDComponent extends Rectangle implements MouseListener, KeyListene
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics g) {
+		if (!visible) {
+			return;
+		}
 		g.setAntiAlias(true);
 		g.resetLineWidth();
 
 		time=System.currentTimeMillis();
 
-		if(mousePressed && backgroundColorPressed!=null)g.setColor(backgroundColorPressed);
+		if(hasFocus && backgroundColorFocused!=null)g.setColor(backgroundColorFocused);
+		else if(mousePressed && backgroundColorPressed!=null)g.setColor(backgroundColorPressed);
 		else if(mouseEntered  && backgroundColorEntered!=null)g.setColor(backgroundColorEntered);
 		else g.setColor(backgroundColor);
 
@@ -119,6 +126,10 @@ public class TGDComponent extends Rectangle implements MouseListener, KeyListene
 
 	public void setBackgroundColorPressed(Color backgroundColorPressed) {
 		this.backgroundColorPressed = backgroundColorPressed;
+	}
+
+	public void setBackgroundColorFocused(Color backgroundColorFocused) {
+		this.backgroundColorFocused = backgroundColorFocused;
 	}
 
 	public int getCornerRadius() {
@@ -216,7 +227,12 @@ public class TGDComponent extends Rectangle implements MouseListener, KeyListene
 	@Override
 	public void mouseClicked(int type, int x, int y, int count) {
 		if( listener!=null){
-			if(contains(x,y))listener.onClick(this);
+			if (System.currentTimeMillis() - time > 300) {
+				hasFocus = false;
+			}
+			if (contains(x,y) && hasFocus && visible) {
+				listener.onClick(this);
+			}
 		}
 	}
 
@@ -284,6 +300,14 @@ public class TGDComponent extends Rectangle implements MouseListener, KeyListene
 
 	public void setOnClickListener(OnClickListener listener){
 		this.listener=listener;
+	}
+
+	public boolean getVisible() {
+		return this.visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public interface OnClickListener{
