@@ -60,7 +60,7 @@ public class AppLoader {
 		return path;
 	}
 
-	private static InputStream openStream(String filename) {
+	public static InputStream openStream(String filename) {
 		InputStream stream = null;
 		if (filename != null && filename.startsWith("/")) {
 			try {
@@ -75,7 +75,7 @@ public class AppLoader {
 		return stream;
 	}
 
-	private static void closeStream(InputStream stream) {
+	public static void closeStream(InputStream stream) {
 		try {
 			stream.close();
 		} catch (Exception error) {}
